@@ -1,0 +1,22 @@
+{
+  "projectName": "start-trpc-prisma",
+  "mode": "file-router",
+  "typescript": true,
+  "tailwind": true,
+  "packageManager": "pnpm",
+  "addOnOptions": {
+    "prisma": {
+      "database": "mysql"
+    }
+  },
+  "git": true,
+  "version": 1,
+  "framework": "react-cra",
+  "chosenAddOns": [
+    "start",
+    "prisma",
+    "shadcn",
+    "tRPC",
+    "tanstack-query"
+  ]
+}

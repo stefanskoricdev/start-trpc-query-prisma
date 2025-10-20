@@ -20,9 +20,9 @@ import chalk from "chalk";
 export interface Task {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   completed: boolean;
-  createdAt: string;
+  createdAt: Date;
 }
 
 // RPC: Server execution, callable from client and server too
@@ -70,7 +70,7 @@ export default function HomePage() {
     trpc.tasks.tasks.queryOptions()
   );
 
-  const { mutate: addTask, isPending: isAddingTaskPending } = useMutation({
+  const { mutate: addTask } = useMutation({
     ...trpc.tasks.add.mutationOptions(),
     onSuccess: () => {
       refetchTasks();
@@ -90,7 +90,7 @@ export default function HomePage() {
       title: newTaskTitle,
       description: "",
       completed: false,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
     };
 
     addTask(newTask);
@@ -132,14 +132,7 @@ export default function HomePage() {
             <Plus className="h-4 w-4" />
           </Button>
         </div>
-
         <TaskList tasks={tasks || []} />
-
-        {isAddingTaskPending && (
-          <div className="mt-2">
-            <TaskSkeleton />
-          </div>
-        )}
       </div>
     </div>
   );

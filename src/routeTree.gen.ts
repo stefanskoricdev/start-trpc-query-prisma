@@ -11,9 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TasksTaskIDRouteImport } from './routes/tasks/$taskID'
-import { Route as DemoTrpcTodoRouteImport } from './routes/demo/trpc-todo'
-import { Route as DemoPrismaRouteImport } from './routes/demo/prisma'
-import { Route as ApiTrpcSplatRouteImport } from './routes/api.trpc.$'
+import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,16 +23,6 @@ const TasksTaskIDRoute = TasksTaskIDRouteImport.update({
   path: '/tasks/$taskID',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTrpcTodoRoute = DemoTrpcTodoRouteImport.update({
-  id: '/demo/trpc-todo',
-  path: '/demo/trpc-todo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoPrismaRoute = DemoPrismaRouteImport.update({
-  id: '/demo/prisma',
-  path: '/demo/prisma',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiTrpcSplatRoute = ApiTrpcSplatRouteImport.update({
   id: '/api/trpc/$',
   path: '/api/trpc/$',
@@ -43,54 +31,30 @@ const ApiTrpcSplatRoute = ApiTrpcSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/prisma': typeof DemoPrismaRoute
-  '/demo/trpc-todo': typeof DemoTrpcTodoRoute
   '/tasks/$taskID': typeof TasksTaskIDRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/prisma': typeof DemoPrismaRoute
-  '/demo/trpc-todo': typeof DemoTrpcTodoRoute
   '/tasks/$taskID': typeof TasksTaskIDRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo/prisma': typeof DemoPrismaRoute
-  '/demo/trpc-todo': typeof DemoTrpcTodoRoute
   '/tasks/$taskID': typeof TasksTaskIDRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/demo/prisma'
-    | '/demo/trpc-todo'
-    | '/tasks/$taskID'
-    | '/api/trpc/$'
+  fullPaths: '/' | '/tasks/$taskID' | '/api/trpc/$'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/demo/prisma'
-    | '/demo/trpc-todo'
-    | '/tasks/$taskID'
-    | '/api/trpc/$'
-  id:
-    | '__root__'
-    | '/'
-    | '/demo/prisma'
-    | '/demo/trpc-todo'
-    | '/tasks/$taskID'
-    | '/api/trpc/$'
+  to: '/' | '/tasks/$taskID' | '/api/trpc/$'
+  id: '__root__' | '/' | '/tasks/$taskID' | '/api/trpc/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoPrismaRoute: typeof DemoPrismaRoute
-  DemoTrpcTodoRoute: typeof DemoTrpcTodoRoute
   TasksTaskIDRoute: typeof TasksTaskIDRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
 }
@@ -111,20 +75,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TasksTaskIDRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/trpc-todo': {
-      id: '/demo/trpc-todo'
-      path: '/demo/trpc-todo'
-      fullPath: '/demo/trpc-todo'
-      preLoaderRoute: typeof DemoTrpcTodoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/prisma': {
-      id: '/demo/prisma'
-      path: '/demo/prisma'
-      fullPath: '/demo/prisma'
-      preLoaderRoute: typeof DemoPrismaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/trpc/$': {
       id: '/api/trpc/$'
       path: '/api/trpc/$'
@@ -137,8 +87,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoPrismaRoute: DemoPrismaRoute,
-  DemoTrpcTodoRoute: DemoTrpcTodoRoute,
   TasksTaskIDRoute: TasksTaskIDRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,
 }

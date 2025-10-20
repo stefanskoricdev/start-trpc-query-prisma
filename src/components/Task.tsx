@@ -1,5 +1,5 @@
-import { useTRPC } from "@/integrations/trpc/react";
-import { Tasks } from "@/integrations/trpc/router";
+import { useTRPC } from "@/trpc/react";
+import { Tasks } from "@/trpc/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Loader, Trash2 } from "lucide-react";

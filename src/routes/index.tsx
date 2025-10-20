@@ -1,9 +1,10 @@
 "use client";
 
+import { TaskSkeleton } from "@/components/TaskSkeleton";
 import { TaskList } from "@/components/TasksList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useTRPC } from "@/integrations/trpc/react";
+import { useTRPC } from "@/trpc/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
@@ -91,7 +92,12 @@ export default function HomePage() {
         </div>
 
         <TaskList tasks={tasks || []} />
-        {isAddingTaskPending && <div>Adding task...</div>}
+
+        {isAddingTaskPending && (
+          <div className="mt-2">
+            <TaskSkeleton />
+          </div>
+        )}
       </div>
     </div>
   );

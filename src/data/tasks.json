@@ -1,1 +1,23 @@
-[{"id":"1","title":"Go workout hard boys","description":"Some random description","completed":true,"createdAt":"2025-10-20T13:45:39.264Z"}]
+[
+  {
+    "id": "0e42c586-1d3e-4bdc-bd39-8d791eba3a8b",
+    "title": "Implement authentication",
+    "description": "Integrate email and password-based authentication using Supabase Auth.",
+    "completed": false,
+    "createdAt": "2025-10-20T17:23:12.785Z"
+  },
+  {
+    "id": "d8221049-f5ef-42ae-89fb-b004c41b84df",
+    "title": "Design login page",
+    "description": "Create a responsive login page layout and implement form validation.",
+    "completed": false,
+    "createdAt": "2025-10-20T17:23:12.785Z"
+  },
+  {
+    "id": "e6e079d5-f737-4f45-8a7f-4d4810178ddf",
+    "title": "Set up project repository",
+    "description": "Create a new GitHub repository and initialize it with a README and .gitignore file.",
+    "completed": false,
+    "createdAt": "2025-10-20T17:23:12.785Z"
+  }
+]

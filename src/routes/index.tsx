@@ -7,8 +7,13 @@ import { Input } from "@/components/ui/input";
 import { useTRPC } from "@/trpc/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  createClientOnlyFn,
+  createIsomorphicFn,
+  createServerFn,
+} from "@tanstack/react-start";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export interface Task {
@@ -19,8 +24,37 @@ export interface Task {
   createdAt: string;
 }
 
+// RPC: Server execution, callable from client and server too
+const runServerFun = createServerFn().handler(() => {
+  console.log("Only runs on server!");
+  return null;
+});
+
+//  Client-only, server crashes if called from server
+const runClientFunc = createClientOnlyFn(() => {
+  console.log("Only runs on client!");
+  return null;
+});
+
+// Different implementation per environment
+const getDeviceInfo = createIsomorphicFn()
+  .server(() => {
+    console.log("Get server OS ==>", process.platform);
+  })
+  .client(() => {
+    console.log("Get user browser ==>", navigator.userAgent);
+  });
+
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => {
+    runServerFun();
+
+    // Runs only server implementation
+    getDeviceInfo();
+
+    // Route loaders are isomorphic!!!
+    console.log("Runs both on server and client!");
+
     await context.queryClient.prefetchQuery(
       context.trpc.tasks.tasks.queryOptions()
     );
@@ -62,6 +96,13 @@ export default function HomePage() {
 
     toast.success("Task added successfully");
   };
+
+  useEffect(() => {
+    runClientFunc();
+
+    // Runs only client implementation
+    getDeviceInfo();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">

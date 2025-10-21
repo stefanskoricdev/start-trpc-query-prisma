@@ -9,7 +9,10 @@
     "**/routeTree.gen.ts": true
   },
   "[prisma]": {
-  "editor.defaultFormatter": "Prisma.prisma"
-},
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "[json]": {
+    "editor.formatOnSave": true
+  },
   "editor.formatOnSave": true
 }

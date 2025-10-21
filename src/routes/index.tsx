@@ -15,6 +15,7 @@ import {
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import chalk from "chalk";
 
 export interface Task {
   id: string;
@@ -26,23 +27,23 @@ export interface Task {
 
 // RPC: Server execution, callable from client and server too
 const runServerFun = createServerFn().handler(() => {
-  console.log("Only runs on server!");
+  console.log(chalk.blue("Only runs on server!"));
   return null;
 });
 
 //  Client-only, server crashes if called from server
 const runClientFunc = createClientOnlyFn(() => {
-  console.log("Only runs on client!");
+  console.log(chalk.green("Only runs on client!"));
   return null;
 });
 
 // Different implementation per environment
 const getDeviceInfo = createIsomorphicFn()
   .server(() => {
-    console.log("Get server OS ==>", process.platform);
+    console.log(chalk.blue(`Get server OS ==> ${process.platform}`));
   })
   .client(() => {
-    console.log("Get user browser ==>", navigator.userAgent);
+    console.log(chalk.green(`Get user browser ==> ${navigator.userAgent}`));
   });
 
 export const Route = createFileRoute("/")({
@@ -53,7 +54,7 @@ export const Route = createFileRoute("/")({
     getDeviceInfo();
 
     // Route loaders are isomorphic!!!
-    console.log("Runs both on server and client!");
+    console.log(chalk.yellow("Runs both on server and client!"));
 
     await context.queryClient.prefetchQuery(
       context.trpc.tasks.tasks.queryOptions()

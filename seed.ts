@@ -5,10 +5,10 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding database...");
 
-  // Clear existing todos
+  // Clear existing tasks
   await prisma.tasks.deleteMany();
 
-  // Create example todos
+  // Create example tasks
   const tasks = await prisma.tasks.createMany({
     data: [
       {

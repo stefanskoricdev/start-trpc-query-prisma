@@ -1,7 +1,9 @@
+// Indicates Prisma Client generation
 generator client {
   provider = "prisma-client-js"
 }
 
+// Specifies DB connection
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")

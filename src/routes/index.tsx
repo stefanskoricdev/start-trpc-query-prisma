@@ -26,7 +26,7 @@ export interface Task {
 }
 
 // RPC: Server execution, callable from client and server too
-const runServerFun = createServerFn().handler(() => {
+const runServerFunc = createServerFn().handler(() => {
   console.log(chalk.blue("Only runs on server!"));
   return null;
 });
@@ -38,7 +38,7 @@ const runClientFunc = createClientOnlyFn(() => {
 });
 
 // Different implementation per environment
-const getDeviceInfo = createIsomorphicFn()
+const runIsomorphicFunc = createIsomorphicFn()
   .server(() => {
     console.log(chalk.blue(`Get server OS ==> ${process.platform}`));
   })
@@ -48,10 +48,10 @@ const getDeviceInfo = createIsomorphicFn()
 
 export const Route = createFileRoute("/")({
   loader: async ({ context }) => {
-    runServerFun();
+    runServerFunc();
 
     // Runs only server implementation
-    getDeviceInfo();
+    runIsomorphicFunc();
 
     // Route loaders are isomorphic!!!
     console.log(chalk.yellow("Runs both on server and client!"));
@@ -102,7 +102,7 @@ export default function HomePage() {
     runClientFunc();
 
     // Runs only client implementation
-    getDeviceInfo();
+    runIsomorphicFunc();
   }, []);
 
   return (

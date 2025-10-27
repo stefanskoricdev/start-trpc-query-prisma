@@ -3,6 +3,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
 // Specifies DB connection
 datasource db {
   provider = "mysql"
@@ -15,4 +19,48 @@ model Tasks {
   description String?
   completed   Boolean  @default(false)
   createdAt   DateTime @default(now())
+}
+
+model Product {
+  id          String   @id @unique @default(uuid())
+  name        String
+  category    String
+  price       Float
+  stock       Int
+  description String
+  createdAt   DateTime @default(now())
+  /// [ProductMetadata]
+  metadata    Json
+
+  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId String?
+}
+
+model Contact {
+  id    String @id @unique @default(uuid())
+  email String
+  phone String
+
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
+  supplierId String   @unique
+}
+
+model Address {
+  id      String @id @unique @default(uuid())
+  street  String
+  city    String
+  country String
+
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
+  supplierId String   @unique
+}
+
+model Supplier {
+  id   String @id @unique @default(uuid())
+  name String
+
+  contact Contact?
+  address Address?
+
+  products Product[]
 }

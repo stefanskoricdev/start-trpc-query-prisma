@@ -112,6 +112,36 @@ const tasksRouter = {
   delete: publicProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async (ctx) => await deleteTask(ctx.input)),
+  get_products: publicProcedure.query(async () => {
+    console.log("START QUERYING...");
+    const startTime = performance.now();
+
+    try {
+      const res = await prisma.product.findMany({
+        cursor: { id: "ffc3074f-379d-4504-9269-06374b2da770" },
+        skip: 1,
+        take: 50,
+        include: {
+          Supplier: {
+            include: {
+              contact: true,
+              address: true,
+            },
+          },
+        },
+      });
+      console.log({
+        first: res[0],
+        last: res[res.length - 1],
+      });
+    } catch (error) {
+      console.log("Error while querying data", error);
+    }
+
+    const endTime = performance.now();
+
+    console.log(`Call to doSomething took ${endTime - startTime} milliseconds`);
+  }),
 } satisfies TRPCRouterRecord;
 
 export const trpcRouter = createTRPCRouter({

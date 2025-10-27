@@ -78,6 +78,11 @@ export default function HomePage() {
     },
   });
 
+  const { data: prods, refetch: refetchProds } = useQuery({
+    ...trpc.tasks.get_products.queryOptions(),
+    enabled: false,
+  });
+
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
   const handleSubmitNewTask = async () => {
@@ -132,6 +137,14 @@ export default function HomePage() {
             <Plus className="h-4 w-4" />
           </Button>
         </div>
+        <Button
+          onClick={() => {
+            refetchProds();
+          }}
+          size="lg"
+        >
+          GET PRODS
+        </Button>
         <TaskList tasks={tasks || []} />
       </div>
     </div>

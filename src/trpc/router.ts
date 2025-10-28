@@ -6,6 +6,7 @@ import type { TRPCRouterRecord } from "@trpc/server";
 //import { readFile, writeFile } from "node:fs/promises";
 import { v4 as uuidv4 } from "uuid";
 import { prisma } from "@/db";
+import { Prisma } from "@prisma/client";
 
 //const TASKS_FILE = "src/data/tasks.json";
 
@@ -117,10 +118,14 @@ const tasksRouter = {
     const startTime = performance.now();
 
     try {
-      const res = await prisma.product.findMany({
-        cursor: { id: "ffc3074f-379d-4504-9269-06374b2da770" },
+      const currCursor = "ffc3074f-379d-4504-9269-06374b2da770";
+
+      /*  const res = await prisma.product.findMany({
         skip: 1,
-        take: 50,
+        take: 100,
+        cursor: { id: currCursor },
+        orderBy: [{ id: "asc" }],
+        relationLoadStrategy: "join",
         include: {
           Supplier: {
             include: {
@@ -129,7 +134,25 @@ const tasksRouter = {
             },
           },
         },
-      });
+      }); */
+
+      const res = (await prisma.$queryRaw(
+        Prisma.sql`
+        SELECT 
+          p.id, p.name, p.price, p.stock, p.description, p.createdAt,
+          s.id as "supplierId", s.name as "supplierName",
+          c.email as "supplierEmail", c.phone as "supplierPhone",
+          a.street as "supplierStreet", a.city as "supplierCity", a.country as "supplierCountry"
+        FROM "Product" p
+        LEFT JOIN "Supplier" s ON p.supplierId = s.id
+        LEFT JOIN "Contact" c ON s.id = c.supplierId
+        LEFT JOIN "Address" a ON s.id = a.supplierId
+        WHERE p.id > ${currCursor}
+        ORDER BY p.id ASC
+        LIMIT 2
+        `
+      )) as any[];
+
       console.log({
         first: res[0],
         last: res[res.length - 1],

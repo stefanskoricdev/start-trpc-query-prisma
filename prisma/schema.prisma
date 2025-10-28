@@ -34,6 +34,9 @@ model Product {
 
   Supplier   Supplier? @relation(fields: [supplierId], references: [id])
   supplierId String?
+
+  @@index([createdAt])
+  @@index([supplierId])
 }
 
 model Contact {
